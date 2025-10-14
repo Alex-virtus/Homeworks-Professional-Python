@@ -1,3 +1,6 @@
+import time
+import logging
+
 from config.settings import URL_ARTICLES, KEYWORDS
 from core.fetcher import get_soup
 from core.parser import get_articles_list, extract_article_info, get_article_body
@@ -13,15 +16,20 @@ def main():
         info = extract_article_info(article)
 
         if contains_keywords(info['preview'], KEYWORDS):
-            print(f'{info['date']} - {info['title']} - {info['link']}')
+            logging.basicConfig(level=logging.INFO)
+            logging.info(f'{info['date']} - {info['title']} - {info['link']}')
             results.append((info['date'], info['title'], info['link']))
             continue
+
+        time.sleep(2)
 
         article_soup = get_soup(info['link'])
         article_text = get_article_body(article_soup)
         if contains_keywords(article_text, KEYWORDS):
-            print(f'{info['date']} - {info['title']} - {info['link']}')
+            logging.basicConfig(level=logging.INFO)
+            logging.info(f'{info['date']} - {info['title']} - {info['link']}')
             results.append((info['date'], info['title'], info['link']))
+    return results
 
 
 if __name__ == '__main__':

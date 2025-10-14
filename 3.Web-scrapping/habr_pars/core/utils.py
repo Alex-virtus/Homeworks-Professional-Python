@@ -1,3 +1,6 @@
+import re
+
+
 def contains_keywords(text: str, keywords: list) -> bool:
     text = text.lower()
-    return any(word in text for word in keywords)
+    return any(re.search(rf'\b{kw}\b', text, re.IGNORECASE) for kw in keywords)
